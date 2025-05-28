@@ -117,7 +117,7 @@ export const login = async (req , res) =>{
     delete userData.password;
 
     const token = jwt.sign({ id: isUserExist._id }, process.env.JWT_SECRET, { expiresIn: '2d' });
-    res.cookie('token', token, { httpOnly: true, sameSite: 'Lax' , secure:false , maxAge: 7 * 24 * 60 * 60 * 1000,});
+    res.cookie('token', token, { httpOnly: true, sameSite: 'None' , secure:false , maxAge: 7 * 24 * 60 * 60 * 1000,});
 
     res.status(201).json({message:"SUccessfull Logged In" , userData})
     

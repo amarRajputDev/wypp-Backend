@@ -5,6 +5,7 @@ const verifyToken = (req, res, next) => {
   // Get token from request headers
   const token = req.cookies?.token
 
+  console.log("Token", token)
 
   if (!token) {
     return res.status(401).json({ success: false, message: "Access Denied! No token provided." });
