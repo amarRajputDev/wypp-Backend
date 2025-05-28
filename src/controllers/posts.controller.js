@@ -19,6 +19,7 @@ export const uploadPost = async (req , res) =>{
     console.log(req.file.path)
 
     let url = await uploadOnCloudinary(req.file.path) 
+    console.log("url" , url)
 
     const post = new Post({
         title,
