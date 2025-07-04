@@ -17,7 +17,7 @@ const app = express();
 const server = http.createServer(app); // Create HTTP server
 export const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173", // Allow frontend origin
+    origin: "https://amarrajputdev.github.io", // Allow frontend origin
     credentials: true, // Allow cookies/tokens
   },
 });
@@ -28,7 +28,7 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://amarrajputdev.github.io",
     credentials: true,
   })
 );
