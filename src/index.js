@@ -17,7 +17,7 @@ const app = express();
 const server = http.createServer(app); // Create HTTP server
 export const io = new Server(server, {
   cors: {
-    origin: "https://amarrajputdev.github.io/wypp-frontend/", // Allow frontend origin
+    origin: "https://amarrajputdev.github.io", // Allow frontend origin
     credentials: true, // Allow cookies/tokens
   },
 });
