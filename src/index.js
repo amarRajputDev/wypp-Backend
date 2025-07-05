@@ -28,7 +28,7 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: "https://amarrajputdev.github.io/wypp-frontend/",
+    origin: "https://amarrajputdev.github.io",
     credentials: true,
   })
 );
