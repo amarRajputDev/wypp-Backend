@@ -1,4 +1,5 @@
 import uploadOnCloudinary from "../config/cloudinary.js";
+import Comment from "../models/CommentsModel.js";
 import Post from "../models/postModel.js";
 import User from "../models/UserModer.js";
 
@@ -62,8 +63,10 @@ export const myPosts = async (req , res)=>{
 
 export const increaseLikes = async (req, res) => {
     const postId = req.params.postId;
+    console.log("Post ID:");
     try {
         const post = await Post.findById(postId);
+
         if (!post) {
             return res.status(404).json({ message: "Post not found" });
         }
@@ -111,10 +114,12 @@ export const addComment = async (req, res) => {
             return res.status(404).json({ message: "Post not found" });
         }
         const userId = req.user.id;
-        const newComment = { user: userId, text: comment };
-        post.comments.push(newComment);
+        const newComment = new Comment({ user: userId, content: comment });
+        const savedComment = await newComment.save();
+        post.comments.push(savedComment._id); // Push the comment ID to the post's comments  
         await post.save();
         res.status(201).json({ message: "Comment added successfully" });
+        console.log("debugging comment", comment)
     } catch (error) {
         console.error("Error adding comment:", error);
         res.status(500).json({ message: "Failed to add comment", error });
@@ -145,7 +150,15 @@ export const deleteComment = async (req, res) => {
 export const getAllComments = async (req, res) => {
     const postId = req.params.postId;
     try {
-        const post = await Post.findById(postId).populate('comments.user', '_id username');
+        const post = await Post.findById(postId)
+  .populate({
+    path: 'comments',
+    populate: {
+      path: 'user',
+      select: '_id username profilePic ',
+      model: 'User'
+    }
+  });
         if (!post) {
             return res.status(404).json({ message: "Post not found" });
         }
@@ -190,6 +203,8 @@ export const getFeedPosts = async (req, res) => {
         // Fetch all posts Populate Comments
         let posts = await Post.find().populate("user" , "username profilePic _id")
 
+        console.log(posts)
+
         // console.log("posts" , posts)
 
         // Scoring function for sorting posts
@@ -223,6 +238,8 @@ export const getFeedPosts = async (req, res) => {
             if (timeDiff < 48) {
                 score += 20 - timeDiff; // The newer the post, the higher the boost
             }
+
+            
 
             return { ...post.toObject(), score }; // Convert Mongoose doc to plain object
         });

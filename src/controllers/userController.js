@@ -258,6 +258,8 @@ export const updateProfile = async (req, res) => {
     let url = null
     console.log(req.body)
 
+    console.log(req.file.path)
+
     if (req.file.path !== undefined) {
        url = await uploadOnCloudinary(req.file.path) 
     }
@@ -273,6 +275,7 @@ export const updateProfile = async (req, res) => {
     if (fullName?.trim()) updateFields.fullName = fullName;
 
     if (Object.keys(updateFields).length === 0) {
+      
       return res.status(400).json({ message: "No valid fields to update" });
     }
 

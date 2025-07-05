@@ -5,7 +5,7 @@ const verifyToken = (req, res, next) => {
   // Get token from request headers
   const token = req.cookies?.token
 
-  console.log("Token", token)
+  // console.log("Token", token)
 
   if (!token) {
     return res.status(401).json({ success: false, message: "Access Denied! No token provided." });
@@ -17,6 +17,7 @@ const verifyToken = (req, res, next) => {
 
     // Attach user data to request object
     req.user = decoded;
+     console.log("Decoded user:", req.user);
     next(); // Proceed to the next middleware
   } catch (error) {
     return res.status(403).json({ success: false, message: "Invalid or expired token." });
